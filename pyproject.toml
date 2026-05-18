@@ -1,0 +1,10 @@
+[project]
+name = "crewai-1l-tile-lead-engine"
+version = "0.1.0"
+description = "CrewAI multi-agent lead generation engine for 1L Tile."
+requires-python = ">=3.10,<3.14"
+dependencies = [
+  "crewai[anthropic,openai]>=1.0.0",
+  "python-dotenv>=1.0.1",
+  "requests>=2.32.0",
+]

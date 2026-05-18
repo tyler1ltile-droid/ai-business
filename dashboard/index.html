@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>1L Lead Engine Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Operation navigation">
+        <div class="brand">
+          <div class="brand-mark">1L</div>
+          <div>
+            <h1>Lead Engine</h1>
+            <p>1L Tile operations console</p>
+          </div>
+        </div>
+        <nav>
+          <a href="#command" class="nav-link active">Command</a>
+          <a href="#readiness" class="nav-link">Readiness</a>
+          <a href="#logs" class="nav-link">Logs</a>
+          <a href="#lead-finder" class="nav-link">Lead Finder</a>
+          <a href="#memory" class="nav-link">Memory</a>
+          <a href="#deployments" class="nav-link">Files</a>
+        </nav>
+        <div class="runtime-card">
+          <span class="label">Engine Python</span>
+          <strong id="engine-python">Checking...</strong>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div>
+            <h2>Autonomous Lead Operation</h2>
+            <p id="workspace">Loading workspace...</p>
+          </div>
+          <div class="status-stack">
+            <span id="run-status" class="status-dot idle">Idle</span>
+            <button id="refresh-button" class="secondary-button" type="button">Refresh</button>
+          </div>
+        </header>
+
+        <section id="command" class="command-grid">
+          <div class="panel primary-panel">
+            <div class="panel-heading">
+              <h3>Run Control</h3>
+              <p>Start safe tests, launch the lead engine, or stop the current run.</p>
+            </div>
+            <label for="business-goal">Business goal</label>
+            <textarea id="business-goal" rows="4">Generate qualified Sarasota-area leads for 1L Tile and Remodeling, prioritizing homeowners and designers who value certified waterproofing, shower remodels, backsplashes, and standards-based tile installation.</textarea>
+            <div class="controls-row">
+              <label for="iterations">Iterations</label>
+              <input id="iterations" type="number" min="1" max="24" value="1">
+            </div>
+            <div class="button-row">
+              <button id="smoke-button" type="button">Smoke Test</button>
+              <button id="dry-button" type="button">Dry Run</button>
+              <button id="live-button" class="danger-button" type="button">Live Run</button>
+              <button id="stop-button" class="secondary-button" type="button">Stop</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-heading">
+              <h3>Where We Are</h3>
+              <p>A plain-English summary of the current setup state.</p>
+            </div>
+            <div id="summary-list" class="summary-list"></div>
+          </div>
+        </section>
+
+        <section id="readiness" class="two-column">
+          <div class="panel">
+            <div class="panel-heading">
+              <h3>Setup Checklist</h3>
+              <p>Secrets stay hidden. This only shows whether each value exists.</p>
+            </div>
+            <div id="env-list" class="check-list"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-heading">
+              <h3>Runtime</h3>
+              <p>Python and CrewAI readiness.</p>
+            </div>
+            <div id="runtime-list" class="check-list"></div>
+            <details>
+              <summary>Python versions found</summary>
+              <pre id="python-versions"></pre>
+            </details>
+          </div>
+        </section>
+
+        <section id="logs" class="panel full-panel">
+          <div class="panel-heading">
+            <h3>Live Logs</h3>
+            <p>Engine output appears here while runs are active.</p>
+          </div>
+          <pre id="log-output" class="log-output">Waiting for activity...</pre>
+        </section>
+
+        <section id="lead-finder" class="lead-layout">
+          <div class="panel primary-panel">
+            <div class="panel-heading">
+              <h3>Lead Finder</h3>
+              <p>Find, score, save, export, and hand off public business prospects.</p>
+            </div>
+
+            <div class="lead-stats">
+              <div>
+                <span>Total</span>
+                <strong id="lead-total">0</strong>
+              </div>
+              <div>
+                <span>Hot</span>
+                <strong id="lead-hot">0</strong>
+              </div>
+              <div>
+                <span>Warm</span>
+                <strong id="lead-warm">0</strong>
+              </div>
+              <div>
+                <span>Cold</span>
+                <strong id="lead-cold">0</strong>
+              </div>
+            </div>
+
+            <div class="finder-grid">
+              <div>
+                <h4>Search public businesses</h4>
+                <p class="helper-text">Requires `GOOGLE_PLACES_API_KEY` in `.env`.</p>
+                <label for="lead-query">Target type</label>
+                <input id="lead-query" value="interior designers">
+                <label for="lead-location">Location</label>
+                <input id="lead-location" value="Sarasota FL">
+                <div class="controls-row">
+                  <label for="lead-limit">Limit</label>
+                  <input id="lead-limit" type="number" min="1" max="20" value="10">
+                </div>
+                <button id="lead-search-button" type="button">Search Leads</button>
+              </div>
+
+              <div>
+                <h4>Add a lead manually</h4>
+                <label for="manual-name">Business name</label>
+                <input id="manual-name" placeholder="Example Design Studio">
+                <label for="manual-category">Category</label>
+                <input id="manual-category" placeholder="Interior designer">
+                <label for="manual-website">Website</label>
+                <input id="manual-website" placeholder="https://example.com">
+                <label for="manual-phone">Phone</label>
+                <input id="manual-phone" placeholder="941-000-0000">
+                <label for="manual-email">Email</label>
+                <input id="manual-email" placeholder="hello@example.com">
+                <label for="manual-location">Location</label>
+                <input id="manual-location" placeholder="Sarasota, FL">
+                <label for="manual-notes">Notes</label>
+                <textarea id="manual-notes" rows="3" placeholder="High-end bath remodels, designer-friendly, property manager, etc."></textarea>
+                <button id="lead-add-button" type="button">Save Lead</button>
+              </div>
+            </div>
+
+            <div class="button-row lead-actions">
+              <button id="lead-export-button" type="button">Export CSV</button>
+              <button id="lead-send-button" type="button">Send Warm/Hot to n8n</button>
+            </div>
+            <p id="lead-message" class="helper-text"></p>
+          </div>
+
+          <div class="panel">
+            <div class="panel-heading">
+              <h3>Prospects</h3>
+              <p>Sorted by lead score.</p>
+            </div>
+            <div id="lead-list" class="lead-list"></div>
+          </div>
+        </section>
+
+        <section id="memory" class="panel full-panel">
+          <div class="panel-heading">
+            <h3>Obsidian Memory</h3>
+            <p id="memory-path">No memory path loaded yet.</p>
+          </div>
+          <pre id="memory-output" class="memory-output"></pre>
+        </section>
+
+        <section id="deployments" class="panel full-panel">
+          <div class="panel-heading">
+            <h3>Generated Files</h3>
+            <p>Latest deployable output from the engine.</p>
+          </div>
+          <div id="files-list" class="files-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
